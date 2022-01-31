@@ -5,89 +5,90 @@ using namespace std;
 
 int main() 
 {
-/*
-    Vec<int> v1;
+
+    Vec<int> v1, v2;
 
     for(int i = 0; i < 12; i++)
         v1.push_back(i+1);
+    for(int i = 0; i < 12; i++)
+        v2.push_back(i+1);
 
     v1.print();
+    v2.print();
+    cout << endl;
 
-    auto vit = v1.begin();
+    auto it1 = v1.begin();
+    auto it2 = v1.begin();
+    it2++;
 
-    //cout << *vit << endl << *(++vit) << endl;
-*/
+    if (it1 < it2)
+        cout << "true" << endl;
+    else
+        cout << "false" << endl;
 
+
+/*
 //init
+    int size = 5;
 
     struct vec
     {
-        std::shared_ptr<int[]> data;
-        vec(int n) { data = std::shared_ptr<int[]>(new int[n]); }
+        shared_ptr<int[]> data;
+        
+        vec(int n) { data = shared_ptr<int[]>(new int[n]); }
     };
     
 
     //represents vector data
-    vec p1(5); 
+    vec p1(size); 
     //represents iterator data
-    std::shared_ptr<vec> p2(&p1, [](vec* ptr)
+    shared_ptr<shared_ptr<int[]>> p2(&(p1.data), [](shared_ptr<int[]>* ptr)
     {
         //no delete calls because ptr is allocated in stack
     });
  
     //init vector data
-    for (size_t i = 0; i < 5; i++)
+    for (size_t i = 0; i < size; i++)
         p1.data[i] = i;
     
     //check if iterator works
-    for (size_t i = 0; i < 5; i++)
-        cout << (*p2).data[i] << ", ";
+    for (size_t i = 0; i < size; i++)
+        cout << (*p2)[i] << ", ";
     cout << endl;
 
-//realloc
-/*
-    int* p = p1.get();
-    delete[] p;
-    p = new int[10];
-    p1.reset(p);
-*/
-    
-    //try to reallocate vector data
-    p1.data = std::shared_ptr<int[]>(new int [5]);
+//realloc    
+    p1.data = shared_ptr<int[]>(new int [size]);
 
 //check
     //change values in vector
-    for (size_t i = 0; i < 5; i++)
+    for (size_t i = 0; i < size; i++)
         p1.data[i] = i*2;
 
     //check if iterator still points to vector
-    for (size_t i = 0; i < 5; i++)
-        cout << (*p2).data[i] << ", ";
+    for (size_t i = 0; i < size; i++)
+        cout << (*p2)[i] << ", ";
     cout << endl;
-
+*/
 
 /*
-    std::vector<int> v1, v2;
-    int count = 5;
-    for (size_t i = 0; i < count; i++)
-        v1.push_back(i);
+    vector<int> v1, v2;
 
-    auto it = v1.begin();
+    for(int i = 0; i < 12; i++)
+        v1.push_back(i+1);
+    for(int i = 0; i < 12; i++)
+        v2.push_back(i+1);
 
-    for (size_t i = 0; i < count; i++)
-        v1.pop_back();
 
-    cout << v1.size() << endl;
+    auto it1 = v1.begin();
+    auto it2 = v2.begin();
+    it1--;
+    it1--;
 
-    for (size_t i = 0; i < 100; i++)
-        cout << *(it++) << ", ";
-    cout << endl;
+
+    cout << *it1 << endl;
+*/
     
-    v1.clear();
-    for (size_t i = count; i > 0; i--)
-        cout << *(--it) << "(" << i << "), ";
-    cout << endl;
-*/    
+    
 
 
     return 0;

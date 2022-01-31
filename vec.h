@@ -4,25 +4,12 @@
 template <typename T>
 class Vec
 {
-private:
-    std::shared_ptr<T[]> data;
-    size_t size;
-    size_t cap;
-
-    void recapacitate_data();
-
 public:
 
     class iterator
     {
-    private:
-        std::shared_ptr<T[]> data;
-        size_t cap;
-        size_t size;
-        size_t i;
-
     public:
-        iterator(std::shared_ptr<T[]> data, size_t cap, size_t size, size_t i);
+        iterator(std::shared_ptr<T[]>& dataPtr, size_t i);
 
         iterator& operator++(); //pre
 
@@ -34,7 +21,35 @@ public:
 
         T& operator*();
 
+        T& operator[](int n);
+
+        std::ptrdiff_t operator-(iterator other);
+
+        iterator operator+(int n);
+        
+        iterator operator-(int n);
+        
+        iterator operator+=(int n);
+        
+        iterator operator-=(int n);
+
+        bool operator==(iterator other) const;
+
+        bool operator!=(iterator other) const;
+
+        bool operator<(iterator other) const;
+
+        bool operator>(iterator other) const;
+
+        bool operator<=(iterator other) const;
+
+        bool operator>=(iterator other) const;
+        
         //friend std::ostream& operator<<(std::ostream& os, const Vec<T>::iterator& curr);
+
+    private:
+        std::shared_ptr<std::shared_ptr<T[]>> dataPtr;
+        size_t i;
     }; 
 
     Vec();
@@ -82,6 +97,11 @@ public:
     }
 */
 
-    
+private:
+    std::shared_ptr<T[]> data;
+    size_t size;
+    size_t cap;
+
+    void recapacitate_data(int newCap); 
 
 };
