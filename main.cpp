@@ -27,20 +27,19 @@ int main()
     };
     
 
-    vec p1;
+    //represents vector data
+    vec p1; 
     p1.data = std::shared_vec<int[]>(new int[5]);
+    //represents iterator data
     vec* p2 = &p1;
-
-   
+ 
+    //init vector data
     for (size_t i = 0; i < 5; i++)
-    {
         p1.data[i] = i;
-    }
-
+    
+    //check if iterator works
     for (size_t i = 0; i < 5; i++)
-    {
         cout << (*p2).data[i] << ", ";
-    }
     cout << endl;
 
 //realloc
@@ -50,13 +49,15 @@ int main()
     p = new int[10];
     p1.reset(p);
 */
-
+    //try to reallocate vector data
     p1.data = std::shared_vec<int[]>(new int [5]);
 
 //check
+    //change values in vector
     for (size_t i = 0; i < 5; i++)
         p1.data[i] = i*2;
 
+    //check if iterator still points to vector
     for (size_t i = 0; i < 5; i++)
         cout << (*p2).data[i] << ", ";
     cout << endl;
