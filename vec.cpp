@@ -12,16 +12,7 @@ void Vec<T>::recapacitate_data()
     for(int i = 0; i < size; i++) 
         temp[i] = data[i];
 
-    //resize data
-    T* dataPtr = data.get();
-    delete[] dataPtr;
-    dataPtr = new T[cap];
-
-    //reinit data
-    for(int i = 0; i < size; i++) 
-        data[i] = temp[i];
-
-    data = temp;
+    data = std::move(temp);
 }
 
 template <typename T>
