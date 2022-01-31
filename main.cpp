@@ -23,12 +23,12 @@ int main()
     struct vec
     {
         std::shared_ptr<int[]> data;
+        vec(std::shared_ptr<int[]>&& data) { this->data = std::move(data); }
     };
     
 
     //represents vector data
-    vec p1; 
-    p1.data = std::shared_ptr<int[]>(new int[5]);
+    vec p1(std::move(std::shared_ptr<int[]>(new int[5]))); 
     //represents iterator data
     std::shared_ptr<vec> p2(&p1, [](vec* ptr)
     {
