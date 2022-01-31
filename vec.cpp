@@ -254,14 +254,16 @@ bool Vec<T>::iterator::operator!=(iterator other) const
 template <typename T>
 bool Vec<T>::iterator::operator<(iterator other) const
 {
-    return this->dataPtr.get() == other.dataPtr.get() &&
+    return 
+    this->dataPtr.get() == other.dataPtr.get() &&
     this->i < other.i;
 }
 
 template <typename T>
 bool Vec<T>::iterator::operator>(iterator other) const
 {
-    return this->dataPtr.get() == other.dataPtr.get() &&
+    return
+    this->dataPtr.get() == other.dataPtr.get() &&
     this->i > other.i;
 }
 
