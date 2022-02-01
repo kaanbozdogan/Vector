@@ -111,6 +111,16 @@ public:
 
 	iterator insert(iterator where, iterator source_beg, iterator source_end);
 
+	iterator erase(iterator where);
+
+	iterator erase(iterator beg, iterator end);
+
+	void assign(size_t n, T val);
+
+	void assign(std::initializer_list<int> ilist);
+
+	void assign(const T* pbeg, const T* pend);
+
 /*
 	friend ostream& operator<<(ostream& os, const Vec& v)
 	{
@@ -131,4 +141,5 @@ private:
 
 	void recapacitate_data(int newCap); 
 
+	int find_iterator_index(iterator where);
 };

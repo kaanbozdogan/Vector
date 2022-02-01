@@ -16,7 +16,6 @@ void print(vector<int> v)
 
 int main() 
 {
-//
 	Vec<int> v1, v2;
 
 	for(int i = 0; i < 12; i++)
@@ -35,30 +34,19 @@ int main()
 	auto it2 = v2.begin();
 	auto end2 = v2.end();
 
+	int *arr = new int[5];
+	for (size_t i = 0; i < 5; i++)
+	{
+		arr[i] = i * 10;
+	}
+	
+	int *b, *e;
+	b = arr;
+	e = &arr[5];
 	
 
-	while (it1 != end1)
-	{
-		cout << *it1 << ", ";
-		it1++;
-	}
-	cout << endl;
-
-	while (it2 != end2)
-	{
-		cout << *it2 << ", ";
-		it2++;
-	}
-	cout << endl;
-
-	auto it = v2.begin();
-	++++++it;
-	
-	auto ret = v2.insert(it , v1.begin(), v1.end());
-
-	v2.print();
-
-	cout << *ret << endl;
+	v1.assign(b,e);
+	v1.print();
 
 /*
 
@@ -91,7 +79,7 @@ int main()
 	for (size_t i = 0; i < size; i++)
 		cout << p2[i] << ", ";
 	cout << endl;
-/
+//
 
 
 	vector<int> v1, v2;
@@ -123,7 +111,12 @@ int main()
 
 	v1.insert(it, 100);
 	print(v1);
+	cout << endl;
+
+	v1.assign(5, 100);
+	print(v1);
 */
+
 
 	return 0;
 }

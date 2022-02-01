@@ -6,8 +6,8 @@ using namespace std;
 /*---HELPER---*/
 
 template <typename T>
-void Vec<T>::recapacitate_data(int newCap){
-		
+void Vec<T>::recapacitate_data(int newCap)
+{		
 	if (cap != newCap) {	
 		cap = newCap;
 
@@ -23,6 +23,27 @@ void Vec<T>::recapacitate_data(int newCap){
 	}
 }
 
+template <typename T>
+int Vec<T>::find_iterator_index(Vec<T>::iterator where)
+{
+	auto it = begin();
+	auto e = end();
+	int idx = 0;
+
+	//find inseriton index
+	while (it != e && it != where)
+	{
+		it++;
+		idx++;
+	}
+
+	if (it != where)
+	{
+		idx = -1;
+	}
+
+	return idx;
+}
 
 /*---SPECIAL MEMBER---*/
 
@@ -227,19 +248,10 @@ Vec<T>::iterator Vec<T>::begin()
 template <typename T>
 Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, T val)
 {	
-	auto it = begin();
-	auto e = end();
-	int idx = 0;
-
-	//find inseriton index
-	while (it != e && it != where)
-	{
-		it++;
-		idx++;
-	}
+	int idx = find_iterator_index(where);
 
 	//insertion index found
-	if (it == where)
+	if (idx != -1)
 	{
 		//check if new capacity  is needed
 		if (size == cap)
@@ -262,33 +274,23 @@ Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, T val)
 template <typename T>
 Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, Vec<T>::iterator source_beg, Vec<T>::iterator source_end)
 {
-	auto it = begin();
-	auto e = end();
-	int idx = 0;
-	int source_size = 0;
-
-	//find insertion index
-	while (it != e && it != where)
-	{
-		it++;
-		idx++;
-	}
+	int idx = find_iterator_index(where);
 
 	//insertion index found
-	if (it == where)
+	if (idx != -1)
 	{
-		it = source_beg;
-		e = source_end;
+		auto it = source_beg;
+		size_t source_size = 0;
 
 		//get size of the source
-		while (it != e && it != where)
+		while (it != source_end)
 		{
 			it++;
 			source_size++;
 		}
 
 		//check if new capacity is needed
-		if (size + source_size >= cap)
+		if (size + source_size > cap)
 		{
 			recapacitate_data(cap + source_size + 5);
 		}
@@ -310,6 +312,96 @@ Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, Vec<T>::iterator source_
 	}
 
 	return iterator(data, idx);
+}
+
+template <typename T>
+Vec<T>::iterator Vec<T>::erase(iterator where)
+{
+	int idx = find_iterator_index(where);
+
+	//insertion index found
+	if (idx != -1)
+	{
+		size--;
+
+		//shift data and insert
+		for (size_t i = idx; i < size; i++)
+		{
+			data[i] = data[i + 1];
+		}
+	}
+
+	return iterator(data, idx);
+}
+
+template <typename T>
+Vec<T>::iterator Vec<T>::erase(iterator beg, iterator end)
+{
+	int idx = find_iterator_index(beg);
+
+	//insertion index found
+	if (idx != -1)
+	{
+		auto it = beg;
+		size_t source_size = 0;
+
+		//get size of the source
+		while (it != end)
+		{
+			it++;
+			source_size++;
+		}
+
+		size -= source_size;
+
+		//shift data and insert
+		for (size_t i = idx; i < size; i++)
+		{
+			data[i] = data[i + source_size];
+		}
+	}
+
+	return iterator(data, idx);
+}
+
+template <typename T>
+void Vec<T>::assign(size_t n, T val)
+{
+	size = n;
+	recapacitate_data(size + 5);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		data[i] = val;
+	}
+	
+}
+
+template <typename T>
+void Vec<T>::assign(initializer_list<int> ilist)
+{
+	size = ilist.size();
+	recapacitate_data(size + 5);
+
+	int i = 0;
+	for(auto e : ilist)
+	{
+		data[i] = e;
+		i++;
+	}
+}
+	
+template <typename T>
+void Vec<T>::assign(const T* pbeg, const T* pend)
+{
+	clear();
+	const T* beg = pbeg;
+	
+	while (beg != pend)
+	{
+		push_back(*beg);
+		beg++;
+	}
 }
 
 template <typename T>
