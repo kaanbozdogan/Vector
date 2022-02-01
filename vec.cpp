@@ -106,6 +106,25 @@ Vec<T>& Vec<T>::operator=(Vec&& other)
 }
 
 
+/*---CONSTRUCTOR---*/
+
+template <typename T>
+Vec<T>::Vec(size_t size, T val)
+{
+	this->size = size;
+	cap = size + 5;
+	data = make_shared<int[]>(cap);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		data[i] = val;
+	}
+	
+}
+
+
+
+
 /*---OPERATOR---*/
 
 /*

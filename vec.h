@@ -57,6 +57,10 @@ public:
 
 	Vec();
 
+	explicit Vec(size_t size, T val = 0);
+
+	Vec(std::initializer_list<int> ilist);
+
 	//~Vec()
 	
 	Vec(const Vec &other);

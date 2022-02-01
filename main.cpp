@@ -48,6 +48,9 @@ int main()
 	v1.assign(b,e);
 	v1.print();
 
+
+
+	delete[] arr;
 /*
 
 //init
