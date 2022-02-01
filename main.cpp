@@ -3,15 +3,10 @@
 
 using namespace std;
 
-template <typename T>
-void foo(T n) {
-	T asd = n;
-	cout << asd << endl;
-}
 
 int main() 
 {
-//
+/*
 	Vec<int> v1, v2;
 
 	for(int i = 0; i < 12; i++)
@@ -70,29 +65,36 @@ int main()
 	for (size_t i = 0; i < size; i++)
 		cout << p2[i] << ", ";
 	cout << endl;
-/
+*/
 
 
 	vector<int> v1, v2;
 
-	for(int i = 0; i < 12; i++)
+	for(int i = 0; i < 4; i++)
 		v1.push_back(i+1);
-	for(int i = 0; i < 12; i++)
-		v2.push_back(i+1);
+	for(int i = 0; i < 7; i++)
+		v2.push_back(i+10);
 
+	
+	v1.swap(v2);
 
 	auto it1 = v1.begin();
+	auto end1 = v1.end();
 	auto it2 = v2.begin();
-	it1--;
-	it1--;
-
-
-	cout << *it1 << endl;
-
-	cout << v1[1] << endl;
-*/	
+	auto end2 = v2.end();
+	
 	
 
+	
+	cout << "1:" << endl;
+	while (it1 != end1) {
+		cout << *(it1++) << ", ";
+	}cout << endl;
+	
+	cout << "2:" << endl;
+	while (it2 != end2) {
+		cout << *(it2++) << ", ";
+	} cout << endl;
 
 	return 0;
 }

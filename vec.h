@@ -87,6 +87,14 @@ public:
 
 	void shrink_to_fit();
 
+	inline int& front() { return data[0]; }
+
+	inline const int& front() const { return data[0]; }
+
+	inline int& back() { return data[size - 1]; }
+
+	inline const int& back() const { return data[size - 1]; }
+
 	inline T& operator[](size_t idx) { cout << "non-const" << endl; return data[idx]; }
 
 	inline const T& operator[](size_t idx) const { cout << "const" << endl; return data[idx]; }
