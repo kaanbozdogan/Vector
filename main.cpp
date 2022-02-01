@@ -6,7 +6,7 @@ using namespace std;
 
 int main() 
 {
-/*
+//
 	Vec<int> v1, v2;
 
 	for(int i = 0; i < 12; i++)
@@ -20,7 +20,6 @@ int main()
 
 	auto it1 = v1.begin();
 	auto it2 = v1.end();
-	it2;
 
 	while (it1 != it2)
 	{
@@ -33,7 +32,27 @@ int main()
 
 	v1.print();
 
-	cout << v1[3] << endl; 
+	v1.swap(v2);
+
+	it1 = v1.begin();
+	it2 = v1.end();
+
+	while (it1 != it2)
+	{
+		cout << *it1 << ", ";
+		it1++;
+	}
+	cout << endl;
+
+	it1 = v2.begin();
+	it2 = v2.end();
+
+	while (it1 != it2)
+	{
+		cout << *it1 << ", ";
+		it1++;
+	}
+	cout << endl;
 
 /*
 //init
@@ -65,7 +84,7 @@ int main()
 	for (size_t i = 0; i < size; i++)
 		cout << p2[i] << ", ";
 	cout << endl;
-*/
+/
 
 
 	vector<int> v1, v2;
@@ -95,6 +114,7 @@ int main()
 	while (it2 != end2) {
 		cout << *(it2++) << ", ";
 	} cout << endl;
+*/
 
 	return 0;
 }

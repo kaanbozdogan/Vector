@@ -173,7 +173,7 @@ void Vec<T>::shrink_to_fit()
 }
 
 template <typename T>
-void swap(Vec<T> other)
+void Vec<T>::swap(Vec<T>& other)
 {
 	shared_ptr<T[]> temp_d;
 	size_t temp_c, temp_s;
@@ -186,9 +186,9 @@ void swap(Vec<T> other)
 	this->cap = move(other.cap);
 	this->size = move(other.size);
 
-	other->data = move(temp_d);
-	other->cap = move(temp_c);
-	other->size = move(temp_s);
+	other.data = move(temp_d);
+	other.cap = move(temp_c);
+	other.size = move(temp_s);
 }
 
 template <typename T>
