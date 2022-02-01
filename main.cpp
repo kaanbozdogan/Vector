@@ -3,9 +3,15 @@
 
 using namespace std;
 
+template <typename T>
+void foo(T n) {
+	T asd = n;
+	cout << asd << endl;
+}
+
 int main() 
 {
-
+//
 	Vec<int> v1, v2;
 
 	for(int i = 0; i < 12; i++)
@@ -18,14 +24,21 @@ int main()
 	cout << endl;
 
 	auto it1 = v1.begin();
-	auto it2 = v1.begin();
-	it2++;
+	auto it2 = v1.end();
+	it2;
 
-	if (it1 < it2)
-		cout << "true" << endl;
-	else
-		cout << "false" << endl;
+	while (it1 != it2)
+	{
+		cout << *it1 << ", ";
+		it1++;
+	}
+	cout << endl;
+	
+	v1.resize(23, 1);
 
+	v1.print();
+
+	cout << v1[3] << endl; 
 
 /*
 //init
@@ -57,9 +70,9 @@ int main()
 	for (size_t i = 0; i < size; i++)
 		cout << p2[i] << ", ";
 	cout << endl;
-*/
+/
 
-/*
+
 	vector<int> v1, v2;
 
 	for(int i = 0; i < 12; i++)
@@ -75,8 +88,9 @@ int main()
 
 
 	cout << *it1 << endl;
-*/
-	
+
+	cout << v1[1] << endl;
+*/	
 	
 
 

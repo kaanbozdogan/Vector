@@ -12,7 +12,7 @@ public:
 	class iterator
 	{
 	public:
-		iterator(shared_ptr<T[]>& dataPtr, size_t i);
+		iterator(shared_ptr<T[]> dataPtr, size_t i);
 
 		iterator& operator++(); //pre
 
@@ -51,7 +51,7 @@ public:
 		//friend ostream& operator<<(ostream& os, const Vec<T>::iterator& curr);
 
 	private:
-		shared_ptr<T[]>> dataPtr;
+		shared_ptr<T[]> data;
 		size_t i;
 	}; 
 
@@ -83,7 +83,13 @@ public:
 
 	void resize(size_t n, T val);
 
-	inline int& operator[](size_t i) { return data[i]; }
+	void reserve(size_t new_cap);
+
+	void shrink_to_fit();
+
+	inline T& operator[](size_t idx) { cout << "non-const" << endl; return data[idx]; }
+
+	inline const T& operator[](size_t idx) const { cout << "const" << endl; return data[idx]; }
 
 	Vec& operator=(initializer_list<T> ilist);
 

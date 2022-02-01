@@ -7,17 +7,20 @@ using namespace std;
 
 template <typename T>
 void Vec<T>::recapacitate_data(int newCap){
-	cap = newCap;
+		
+	if (cap != newCap) {	
+		cap = newCap;
 
-	//init temp data
-	shared_ptr<T[]> temp(new T[cap]);
+		//init temp data
+		shared_ptr<T[]> temp(new T[cap]);
 
-	for(int i = 0; i < size; i++)
-	{
-		temp[i] = data[i];
+		for(int i = 0; i < size; i++)
+		{
+			temp[i] = data[i];
+		}
+
+		data = move(temp);
 	}
-
-	data = move(temp);
 }
 
 
@@ -142,14 +145,37 @@ template <typename T>
 void Vec<T>::resize(size_t n, T val)
 {
 	size = n;
-	cap = n + 5;
-	data = make_shared<T[]>(cap, val); 
+	recapacitate_data(size + 5);
+	data = make_shared<T[]>(cap);
+
+	for (size_t i = 0; i < size; i++)
+	{
+		data[i] = val;
+	}
+	 
+}
+
+template <typename T>
+void Vec<T>::reserve(size_t new_cap)
+{
+	recapacitate_data(new_cap);
+
+	if (size < cap)
+	{
+		size = cap;
+	}
+}
+
+template <typename T>
+void Vec<T>::shrink_to_fit()
+{
+	recapacitate_data(size);
 }
 
 template <typename T>
 Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 {
-	resize(ilist.size());
+	resize(ilist.size(), (new int(1)));
 
 	T* curr = ilist.begin();
 	T* end = ilist.end();
@@ -169,7 +195,7 @@ Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 /*---ITERATOR---*/
 
 template <typename T>
-Vec<T>::iterator::iterator(shared_ptr<T[]>& data, size_t i) :
+Vec<T>::iterator::iterator(shared_ptr<T[]> data, size_t i) :
 	data(data), i(i)
 {}
 
@@ -218,13 +244,13 @@ Vec<T>::iterator Vec<T>::iterator::operator--(int)
 template <typename T>
 T& Vec<T>::iterator::operator*()
 {
-	return (*dataPtr)[i];
+	return data[i];
 }
 
 template <typename T>
 T& Vec<T>::iterator::operator[](int n)
 {
-	return (*dataPtr)[i + n];
+	return data[i + n];
 }
 
 template <typename T>
@@ -236,13 +262,13 @@ std::ptrdiff_t Vec<T>::iterator::operator-(iterator other)
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator+(int n)
 {
-	return iterator(*dataPtr, i + n);
+	return iterator(*data, i + n);
 }
 
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator-(int n)
 {
-	return iterator(*dataPtr, i - n);
+	return iterator(*data, i - n);
 }
 
 template <typename T>
@@ -263,7 +289,7 @@ template <typename T>
 bool Vec<T>::iterator::operator==(iterator other) const
 {   
 	return
-	this->dataPtr.get() == other.dataPtr.get() && 
+	this->data.get() == other.data.get() && 
 	this->i == other.i;
 }
 
@@ -277,7 +303,7 @@ template <typename T>
 bool Vec<T>::iterator::operator<(iterator other) const
 {
 	return 
-	this->dataPtr.get() == other.dataPtr.get() &&
+	this->data.get() == other.data.get() &&
 	this->i < other.i;
 }
 
@@ -285,7 +311,7 @@ template <typename T>
 bool Vec<T>::iterator::operator>(iterator other) const
 {
 	return
-	this->dataPtr.get() == other.dataPtr.get() &&
+	this->data.get() == other.data.get() &&
 	this->i > other.i;
 }
 
