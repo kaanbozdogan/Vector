@@ -12,30 +12,16 @@ int main()
 	for(int i = 0; i < 12; i++)
 		v1.push_back(i+1);
 	for(int i = 0; i < 12; i++)
-		v2.push_back(i+1);
+		v2.push_back(i+10);
 
 	v1.print();
 	v2.print();
 	cout << endl;
 
-	auto it1 = v1.begin();
-	auto it2 = v1.end();
-
-	while (it1 != it2)
-	{
-		cout << *it1 << ", ";
-		it1++;
-	}
-	cout << endl;
-	
-	v1.resize(23, 1);
-
-	v1.print();
-
 	v1.swap(v2);
 
-	it1 = v1.begin();
-	it2 = v1.end();
+	auto it1 = v1.begin();
+	auto it2 = v1.end();
 
 	while (it1 != it2)
 	{
