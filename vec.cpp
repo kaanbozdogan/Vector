@@ -170,13 +170,8 @@ Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 
 template <typename T>
 Vec<T>::iterator::iterator(shared_ptr<T[]>& data, size_t i) :
-	i(i)
-{
-	dataPtr = shared_ptr<shared_ptr<T[]>>(&data, [](shared_ptr<T[]>* ptr)
-	{
-		//no delete calls because ptr is allocated in stack
-	});
-}
+	data(data), i(i)
+{}
 
 template <typename T>
 Vec<T>::iterator Vec<T>::begin()

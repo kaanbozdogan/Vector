@@ -12,7 +12,7 @@ public:
 	class iterator
 	{
 	public:
-		iterator(std::shared_ptr<T[]>& dataPtr, size_t i);
+		iterator(shared_ptr<T[]>& dataPtr, size_t i);
 
 		iterator& operator++(); //pre
 
@@ -26,7 +26,7 @@ public:
 
 		T& operator[](int n);
 
-		std::ptrdiff_t operator-(iterator other);
+		ptrdiff_t operator-(iterator other);
 
 		iterator operator+(int n);
 		
@@ -48,10 +48,10 @@ public:
 
 		bool operator>=(iterator other) const;
 		
-		//friend std::ostream& operator<<(std::ostream& os, const Vec<T>::iterator& curr);
+		//friend ostream& operator<<(ostream& os, const Vec<T>::iterator& curr);
 
 	private:
-		std::shared_ptr<std::shared_ptr<T[]>> dataPtr;
+		shared_ptr<T[]>> dataPtr;
 		size_t i;
 	}; 
 
@@ -85,7 +85,7 @@ public:
 
 	inline int& operator[](size_t i) { return data[i]; }
 
-	Vec& operator=(std::initializer_list<T> ilist);
+	Vec& operator=(initializer_list<T> ilist);
 
 	iterator begin();
 
@@ -105,7 +105,7 @@ public:
 */
 
 private:
-	std::shared_ptr<T[]> data;
+	shared_ptr<T[]> data;
 	size_t size;
 	size_t cap;
 
