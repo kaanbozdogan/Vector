@@ -173,6 +173,25 @@ void Vec<T>::shrink_to_fit()
 }
 
 template <typename T>
+void swap(Vec<T> other)
+{
+	shared_ptr<T[]> temp_d;
+	size_t temp_c, temp_s;
+
+	temp_d = move(this->data);
+	temp_c = move(this->cap);
+	temp_s = move(this->size);
+
+	this->data = move(other.data);
+	this->cap = move(other.cap);
+	this->size = move(other.size);
+
+	other->data = move(temp_d);
+	other->cap = move(temp_c);
+	other->size = move(temp_s);
+}
+
+template <typename T>
 Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 {
 	resize(ilist.size(), (new int(1)));

@@ -87,6 +87,8 @@ public:
 
 	void shrink_to_fit();
 
+	void swap(Vec<T> other);
+
 	inline int& front() { return data[0]; }
 
 	inline const int& front() const { return data[0]; }
