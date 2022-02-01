@@ -107,6 +107,10 @@ public:
 
 	iterator end();
 
+	iterator insert(iterator where, T val);
+
+	iterator insert(iterator where, iterator source_beg, iterator source_end);
+
 /*
 	friend ostream& operator<<(ostream& os, const Vec& v)
 	{

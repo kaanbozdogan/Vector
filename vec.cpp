@@ -225,6 +225,94 @@ Vec<T>::iterator Vec<T>::begin()
 }
 
 template <typename T>
+Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, T val)
+{	
+	auto it = begin();
+	auto e = end();
+	int idx = 0;
+
+	//find inseriton index
+	while (it != e && it != where)
+	{
+		it++;
+		idx++;
+	}
+
+	//insertion index found
+	if (it == where)
+	{
+		//check if new capacity  is needed
+		if (size == cap)
+		{
+			recapacitate_data(cap + 5);
+		}
+		size++;
+
+		//shift data and insert
+		for (int i = size - 1; i > idx; i--)
+		{
+			data[i] = data[i - 1];
+		}
+		data[idx] = val;
+	}
+
+	return iterator(data, idx);
+}
+
+template <typename T>
+Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, Vec<T>::iterator source_beg, Vec<T>::iterator source_end)
+{
+	auto it = begin();
+	auto e = end();
+	int idx = 0;
+	int source_size = 0;
+
+	//find insertion index
+	while (it != e && it != where)
+	{
+		it++;
+		idx++;
+	}
+
+	//insertion index found
+	if (it == where)
+	{
+		it = source_beg;
+		e = source_end;
+
+		//get size of the source
+		while (it != e && it != where)
+		{
+			it++;
+			source_size++;
+		}
+
+		//check if new capacity is needed
+		if (size + source_size >= cap)
+		{
+			recapacitate_data(cap + source_size + 5);
+		}
+		size += source_size;
+
+		//shift data
+		for (int i = size - 1; i >= idx + source_size; i--)
+		{
+			data[i] = data[i - source_size];
+		}
+		
+		//insert source
+		it = source_beg;
+		for (size_t i = 0; i < source_size; i++)
+		{
+			data[i + idx] = *it;
+			it++;
+		}
+	}
+
+	return iterator(data, idx);
+}
+
+template <typename T>
 Vec<T>::iterator Vec<T>::end()
 {
 	return iterator(data, size);

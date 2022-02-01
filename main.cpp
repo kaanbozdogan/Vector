@@ -3,6 +3,16 @@
 
 using namespace std;
 
+void print(vector<int> v)
+{
+	auto s = v.begin();
+	auto e = v.end();
+
+	while(s != e)
+	{
+		cout << *(s++) << ", ";
+	} cout << endl;
+}
 
 int main() 
 {
@@ -21,26 +31,37 @@ int main()
 	v1.swap(v2);
 
 	auto it1 = v1.begin();
-	auto it2 = v1.end();
+	auto end1 = v1.end();
+	auto it2 = v2.begin();
+	auto end2 = v2.end();
 
-	while (it1 != it2)
+	
+
+	while (it1 != end1)
 	{
 		cout << *it1 << ", ";
 		it1++;
 	}
 	cout << endl;
 
-	it1 = v2.begin();
-	it2 = v2.end();
-
-	while (it1 != it2)
+	while (it2 != end2)
 	{
-		cout << *it1 << ", ";
-		it1++;
+		cout << *it2 << ", ";
+		it2++;
 	}
 	cout << endl;
+
+	auto it = v2.begin();
+	++++++it;
+	
+	auto ret = v2.insert(it , v1.begin(), v1.end());
+
+	v2.print();
+
+	cout << *ret << endl;
 
 /*
+
 //init
 	int size = 5;	
 
@@ -80,17 +101,13 @@ int main()
 	for(int i = 0; i < 7; i++)
 		v2.push_back(i+10);
 
-	
-	v1.swap(v2);
+
 
 	auto it1 = v1.begin();
 	auto end1 = v1.end();
 	auto it2 = v2.begin();
 	auto end2 = v2.end();
-	
-	
-
-	
+		
 	cout << "1:" << endl;
 	while (it1 != end1) {
 		cout << *(it1++) << ", ";
@@ -100,6 +117,12 @@ int main()
 	while (it2 != end2) {
 		cout << *(it2++) << ", ";
 	} cout << endl;
+
+	auto it = v2.begin();
+	++++it;
+
+	v1.insert(it, 100);
+	print(v1);
 */
 
 	return 0;
