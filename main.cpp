@@ -46,7 +46,7 @@ int main()
 	
 
 	v1.assign(b,e);
-	v1.print();
+	cout << v1;
 
 
 

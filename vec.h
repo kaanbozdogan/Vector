@@ -125,8 +125,8 @@ public:
 
 	void assign(const T* pbeg, const T* pend);
 
-	template <typename T>
-	friend ostream& operator<<(ostream& os, const Vec<T>& v);
+	template <typename U>
+	friend ostream& operator<<(ostream& os, const Vec<U>& v);
 
 
 private:
