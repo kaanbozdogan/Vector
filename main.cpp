@@ -1,4 +1,5 @@
 #include"vec.cpp"
+#include"iter.cpp"
 #include<vector>
 
 using namespace std;

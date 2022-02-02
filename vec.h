@@ -1,3 +1,6 @@
+#ifndef VEC_H
+#define VEC_H
+
 #include<iostream>
 #include<memory>
 
@@ -140,3 +143,6 @@ private:
 
 	int find_iterator_index(iterator where);
 };
+
+
+#endif
