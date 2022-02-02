@@ -127,13 +127,17 @@ Vec<T>::Vec(size_t size, T val)
 
 /*---OPERATOR---*/
 
-/*
 template <typename T>
-ostream& operator<<(ostream& os, const Vec<T>::iterator& curr) 
+ostream& operator<<(ostream& os, const Vec<T>& v)
 {
+	for(int i = 0; i < v.sizee(); i++)
+	{
+		os << v.data[i] << ", ";
+	}
+	os << endl << "size: " << v.sizee() << " - cap: " << v.capacity() << endl;
+
 	return os;
 }
-*/
 
 
 /*---MEMBER---*/

@@ -125,18 +125,9 @@ public:
 
 	void assign(const T* pbeg, const T* pend);
 
-/*
-	friend ostream& operator<<(ostream& os, const Vec& v)
-	{
-		for(int i = 0; i < size; i++)
-		{
-			os << data[i] << ", ";
-		}
-		os << endl << "size: " << size << " - cap: " << cap << endl;
+	template <typename T>
+	friend ostream& operator<<(ostream& os, const Vec<T>& v);
 
-		return os;
-	}
-*/
 
 private:
 	shared_ptr<T[]> data;
