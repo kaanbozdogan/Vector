@@ -1,6 +1,7 @@
 #include"vec.cpp"
 #include"iter.cpp"
 #include<vector>
+#include<typeinfo>
 
 using namespace std;
 
@@ -50,50 +51,30 @@ int main()
 	delete[] arr;
 
 	v1.assign(initializer_list({11,22,33,44,55}));
+	cout << v1 << endl;
+
+
+	auto cit = v1.begin();
+
+	cout << *cit;
+
+	*cit = 1100010101;
+
 	cout << v1;
 
-/*
 
-//init
-	int size = 5;	
-
-	//represents vector data
-	shared_ptr<int[]> p1(new int[size]); 
-	//represents iterator data
-	shared_ptr<int[]> p2 = p1;
- 
-	//init vector data
-	for (size_t i = 0; i < size; i++)
-		p1[i] = i;
+	std::vector<int> nums {1, 2, 4, 8, 16};
+	auto vcit = nums.cbegin();
 	
-	//check if iterator works
-	for (size_t i = 0; i < size; i++)
-		cout << p2[i] << ", ";
-	cout << endl;
-
-//realloc
-	p1 = move(shared_ptr<int[]>(new int [size]));
-
-//check
-	//change values in vector
-	for (size_t i = 0; i < size; i++)
-		p1[i] = i*2;
-
-	//check if iterator still points to vector
-	for (size_t i = 0; i < size; i++)
-		cout << p2[i] << ", ";
-	cout << endl;
-//
 
 
+/*
 	vector<int> v1, v2;
 
 	for(int i = 0; i < 4; i++)
 		v1.push_back(i+1);
 	for(int i = 0; i < 7; i++)
 		v2.push_back(i+10);
-
-
 
 	auto it1 = v1.begin();
 	auto end1 = v1.end();

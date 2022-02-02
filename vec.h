@@ -50,13 +50,57 @@ public:
 		bool operator<=(iterator other) const;
 
 		bool operator>=(iterator other) const;
-		
-		//friend ostream& operator<<(ostream& os, const Vec<T>::iterator& curr);
 
 	private:
 		shared_ptr<T[]> data;
 		size_t i;
-	}; 
+	};
+
+
+	class const_iterator
+	{
+	public:
+		const_iterator(shared_ptr<T[]> data, size_t i);
+
+		const_iterator& operator++();
+
+		const_iterator operator++(int);
+
+		const_iterator& operator--();
+
+		const_iterator operator--(int);
+
+		const T& operator*();
+
+		const T& operator[](int n);
+
+		ptrdiff_t operator-(const_iterator other);
+
+		const_iterator operator+(int n);
+		
+		const_iterator operator-(int n);
+		
+		const_iterator operator+=(int n);
+		
+		const_iterator operator-=(int n);
+
+		bool operator==(const_iterator other) const;
+
+		bool operator!=(const_iterator other) const;
+
+		bool operator<(const_iterator other) const;
+
+		bool operator>(const_iterator other) const;
+
+		bool operator<=(const_iterator other) const;
+
+		bool operator>=(const_iterator other) const;
+
+	private:
+		shared_ptr<const T[]> data;
+		size_t i;
+	};
+
 
 	Vec();
 
@@ -129,6 +173,10 @@ public:
 	inline iterator begin() { return iterator(data, 0); }
 
 	inline iterator end() { return iterator(data, size); }
+
+	inline const_iterator cbegin() const { return const_iterator(data, 0); };
+	
+	inline const_iterator cend() const { return const_iterator(data, size); };
 
 	template <typename U>
 	friend ostream& operator<<(ostream& os, const Vec<U>& v);
