@@ -2,11 +2,11 @@
 
 using namespace std;
 
+
 template <typename T>
-Vec<T>::iterator Vec<T>::end()
-{
-	return iterator(data, size);
-}
+Vec<T>::iterator::iterator(shared_ptr<T[]> data, size_t i) :
+	data(data), i(i)
+{}
 
 template <typename T>
 Vec<T>::iterator& Vec<T>::iterator::operator++() 

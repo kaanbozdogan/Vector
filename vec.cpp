@@ -290,14 +290,15 @@ Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 /*---ITERATOR---*/
 
 template <typename T>
-Vec<T>::iterator::iterator(shared_ptr<T[]> data, size_t i) :
-	data(data), i(i)
-{}
-
-template <typename T>
 Vec<T>::iterator Vec<T>::begin()
 {
 	return iterator(data, 0);
+}
+
+template <typename T>
+Vec<T>::iterator Vec<T>::end()
+{
+	return iterator(data, size);
 }
 
 template <typename T>
