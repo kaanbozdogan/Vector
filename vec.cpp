@@ -11,13 +11,18 @@ void Vec<T>::recapacitate_data(int newCap)
 	if (cap != newCap) {	
 		cap = newCap;
 
+		if (size > cap)
+		{
+			size = cap;
+		}
+
 		//init temp data
 		shared_ptr<T[]> temp(new T[cap]);
 
 		for(int i = 0; i < size; i++)
 		{
 			temp[i] = data[i];
-		}
+		}	
 
 		data = move(temp);
 	}
@@ -53,14 +58,14 @@ Vec<T>::Vec()
 	cap = 10;
 	size = 0;
 
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 }
 
 template <typename T>
 Vec<T>::Vec(const Vec &other) :
 	size(other.size), cap(other.cap)
 {
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 
 	for(int i = 0; i < size; i++)
 	{
@@ -84,7 +89,7 @@ Vec<T>& Vec<T>::operator=(const Vec &other)
 	size = other.size;
 	cap = other.cap;
 
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 
 	for(int i = 0; i < size; i++)
 	{
@@ -113,7 +118,7 @@ Vec<T>::Vec(size_t size, T val)
 {
 	this->size = size;
 	cap = size + 5;
-	data = make_shared<int[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -127,13 +132,27 @@ Vec<T>::Vec(initializer_list<T> ilist)
 {
 	size = ilist.size();
 	cap = size + 5;
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 
 	int i = 0;
 	for(auto e : ilist)
 	{
 		data[i] = e;
 		i++;
+	}
+}
+
+template <typename T>
+Vec<T>::Vec(const T *pbegin, const T *pend)
+{
+	size = 0;
+	cap = 10;
+	data = shared_ptr<T[]>(new T[cap]);
+
+	while (pbegin != pend)
+	{
+		push_back(*pbegin);
+		pbegin++;
 	}
 }
 
@@ -195,7 +214,7 @@ void Vec<T>::clear()
 {
 	size = 0;
 	cap = 10;
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 }
 
 template <typename T>
@@ -203,7 +222,7 @@ void Vec<T>::resize(size_t n, T val)
 {
 	size = n;
 	recapacitate_data(size + 5);
-	data = make_shared<T[]>(cap);
+	data = shared_ptr<T[]>(new T[cap]);
 
 	for (size_t i = 0; i < size; i++)
 	{
@@ -251,7 +270,7 @@ void Vec<T>::swap(Vec<T>& other)
 template <typename T>
 Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 {
-	resize(ilist.size(), (new int(1)));
+	resize(ilist.size(), 0);
 
 	T* curr = ilist.begin();
 	T* end = ilist.end();

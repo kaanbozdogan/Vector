@@ -61,6 +61,8 @@ public:
 
 	Vec(initializer_list<T> ilist);
 
+	Vec(const T *pbegin, const T *pend);
+
 	//~Vec()
 	
 	Vec(const Vec &other);

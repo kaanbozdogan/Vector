@@ -44,13 +44,14 @@ int main()
 	b = arr;
 	e = &arr[5];
 	
-
 	v1.assign(b,e);
+	cout << v1;
+	delete[] arr;
+
+	v1.assign(initializer_list({11,22,33,44,55}));
 	cout << v1;
 
 
-
-	delete[] arr;
 /*
 
 //init
