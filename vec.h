@@ -112,10 +112,6 @@ public:
 
 	Vec& operator=(initializer_list<T> ilist);
 
-	iterator begin();
-
-	iterator end();
-
 	iterator insert(iterator where, T val);
 
 	iterator insert(iterator where, iterator source_beg, iterator source_end);
@@ -129,6 +125,10 @@ public:
 	void assign(initializer_list<T> ilist);
 
 	void assign(const T* pbeg, const T* pend);
+
+	inline iterator begin() { return iterator(data, 0); }
+
+	inline iterator end() { return iterator(data, size); }
 
 	template <typename U>
 	friend ostream& operator<<(ostream& os, const Vec<U>& v);

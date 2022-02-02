@@ -286,21 +286,6 @@ Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 	return *this;
 }
 
-
-/*---ITERATOR---*/
-
-template <typename T>
-Vec<T>::iterator Vec<T>::begin()
-{
-	return iterator(data, 0);
-}
-
-template <typename T>
-Vec<T>::iterator Vec<T>::end()
-{
-	return iterator(data, size);
-}
-
 template <typename T>
 Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, T val)
 {	
