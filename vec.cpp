@@ -53,14 +53,14 @@ Vec<T>::Vec()
 	cap = 10;
 	size = 0;
 
-	data = shared_ptr<T[]>(new T[cap]);
+	data = make_shared<T[]>(cap);
 }
 
 template <typename T>
 Vec<T>::Vec(const Vec &other) :
 	size(other.size), cap(other.cap)
 {
-	data = shared_ptr<T[]>(new T[cap]);
+	data = make_shared<T[]>(cap);
 
 	for(int i = 0; i < size; i++)
 	{
@@ -84,7 +84,7 @@ Vec<T>& Vec<T>::operator=(const Vec &other)
 	size = other.size;
 	cap = other.cap;
 
-	data = shared_ptr<T[]>(new T[cap]);
+	data = make_shared<T[]>(cap);
 
 	for(int i = 0; i < size; i++)
 	{
@@ -122,7 +122,20 @@ Vec<T>::Vec(size_t size, T val)
 	
 }
 
+template <typename T>
+Vec<T>::Vec(initializer_list<T> ilist) 
+{
+	size = ilist.size();
+	cap = size + 5;
+	data = make_shared<T[]>(cap);
 
+	int i = 0;
+	for(auto e : ilist)
+	{
+		data[i] = e;
+		i++;
+	}
+}
 
 
 /*---OPERATOR---*/
@@ -401,7 +414,7 @@ void Vec<T>::assign(size_t n, T val)
 }
 
 template <typename T>
-void Vec<T>::assign(initializer_list<int> ilist)
+void Vec<T>::assign(initializer_list<T> ilist)
 {
 	size = ilist.size();
 	recapacitate_data(size + 5);
@@ -418,12 +431,11 @@ template <typename T>
 void Vec<T>::assign(const T* pbeg, const T* pend)
 {
 	clear();
-	const T* beg = pbeg;
 	
-	while (beg != pend)
+	while (pbeg != pend)
 	{
-		push_back(*beg);
-		beg++;
+		push_back(*pbeg);
+		pbeg++;
 	}
 }
 

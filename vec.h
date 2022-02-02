@@ -59,7 +59,7 @@ public:
 
 	explicit Vec(size_t size, T val = 0);
 
-	Vec(std::initializer_list<int> ilist);
+	Vec(initializer_list<T> ilist);
 
 	//~Vec()
 	
@@ -93,13 +93,13 @@ public:
 
 	void swap(Vec<T>& other);
 
-	inline int& front() { return data[0]; }
+	inline T& front() { return data[0]; }
 
-	inline const int& front() const { return data[0]; }
+	inline const T& front() const { return data[0]; }
 
-	inline int& back() { return data[size - 1]; }
+	inline T& back() { return data[size - 1]; }
 
-	inline const int& back() const { return data[size - 1]; }
+	inline const T& back() const { return data[size - 1]; }
 
 	inline T& operator[](size_t idx) { cout << "non-const" << endl; return data[idx]; }
 
@@ -121,7 +121,7 @@ public:
 
 	void assign(size_t n, T val);
 
-	void assign(std::initializer_list<int> ilist);
+	void assign(initializer_list<T> ilist);
 
 	void assign(const T* pbeg, const T* pend);
 
