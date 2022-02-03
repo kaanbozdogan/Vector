@@ -110,6 +110,8 @@ public:
 
 	Vec(const T *pbegin, const T *pend);
 
+	Vec(Vec<T>::const_iterator beg, Vec<T>::const_iterator end);
+
 	//~Vec()
 	
 	Vec(const Vec &other);
@@ -126,6 +128,10 @@ public:
 
 	inline bool empty() const { return size == 0; }
 
+	inline T* dataa() { data.get(); }
+
+	inline const T* dataa() const { data.get(); }
+
 	void print();
 
 	void push_back(const T& value);
@@ -134,7 +140,7 @@ public:
 
 	void clear();
 
-	void resize(size_t n, T val);
+	void resize(size_t n, T val = 0);
 
 	void reserve(size_t new_cap);
 
@@ -150,9 +156,9 @@ public:
 
 	inline const T& back() const { return data[size - 1]; }
 
-	inline T& operator[](size_t idx) { cout << "non-const" << endl; return data[idx]; }
+	inline T& operator[](size_t idx) { return data[idx]; }
 
-	inline const T& operator[](size_t idx) const { cout << "const" << endl; return data[idx]; }
+	inline const T& operator[](size_t idx) const { return data[idx]; }
 
 	Vec& operator=(initializer_list<T> ilist);
 

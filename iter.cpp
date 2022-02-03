@@ -59,13 +59,13 @@ std::ptrdiff_t Vec<T>::iterator::operator-(iterator other)
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator+(int n)
 {
-	return iterator(*data, i + n);
+	return iterator(data, i + n);
 }
 
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator-(int n)
 {
-	return iterator(*data, i - n);
+	return iterator(data, i - n);
 }
 
 template <typename T>
@@ -187,13 +187,13 @@ std::ptrdiff_t Vec<T>::const_iterator::operator-(const_iterator other)
 template <typename T>
 Vec<T>::const_iterator Vec<T>::const_iterator::operator+(int n)
 {
-	return const_iterator(*data, i + n);
+	return const_iterator(data, i + n);
 }
 
 template <typename T>
 Vec<T>::const_iterator Vec<T>::const_iterator::operator-(int n)
 {
-	return const_iterator(*data, i - n);
+	return const_iterator(data, i - n);
 }
 
 template <typename T>

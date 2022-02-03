@@ -156,16 +156,34 @@ Vec<T>::Vec(const T *pbegin, const T *pend)
 	}
 }
 
+template <typename T>
+Vec<T>::Vec(Vec<T>::const_iterator beg, Vec<T>::const_iterator end)
+{
+	size = 0;
+	cap = 10;
+	data = shared_ptr<T[]>(new T[cap]);
+
+	while (beg != end)
+	{
+		push_back(*beg);
+		beg++;
+	}
+}
+
 
 /*---OPERATOR---*/
 
 template <typename T>
 ostream& operator<<(ostream& os, const Vec<T>& v)
 {
+	os << "[";
+
 	for(int i = 0; i < v.sizee(); i++)
 	{
-		os << v.data[i] << ", ";
+		os << v.data[i] << " ";
 	}
+	os << "]";
+
 	os << endl << "size: " << v.sizee() << " - cap: " << v.capacity() << endl;
 
 	return os;
@@ -174,14 +192,6 @@ ostream& operator<<(ostream& os, const Vec<T>& v)
 
 /*---MEMBER---*/
 
-template <typename T>
-void Vec<T>::print() {
-	for(int i = 0; i < size; i++)
-	{
-		cout << data[i] << ", ";
-	}
-	cout << endl << "size: " << size << " - cap: " << cap << endl;
-}
 
 template <typename T>
 void Vec<T>::push_back(const T& value)
@@ -220,25 +230,34 @@ void Vec<T>::clear()
 template <typename T>
 void Vec<T>::resize(size_t n, T val)
 {
-	size = n;
-	recapacitate_data(size + 5);
-	data = shared_ptr<T[]>(new T[cap]);
-
-	for (size_t i = 0; i < size; i++)
+	if (size != n)
 	{
-		data[i] = val;
-	}
-	 
+		recapacitate_data(n + 5);
+		size_t old_size = size;
+		size = n;
+
+		// new size is bigger new elements are added
+		if (old_size < n)
+		{
+			for (size_t i = old_size; i < size; i++)
+			{
+				data[i] = val;
+			}
+			
+		}		
+	}	 
 }
 
 template <typename T>
 void Vec<T>::reserve(size_t new_cap)
 {
-	recapacitate_data(new_cap);
+	if (new_cap > cap) {
+		recapacitate_data(new_cap);
 
-	if (size < cap)
-	{
-		size = cap;
+		if (size > cap)
+		{
+			size = cap;
+		}
 	}
 }
 
@@ -272,8 +291,8 @@ Vec<T>& Vec<T>::operator=(initializer_list<T> ilist)
 {
 	resize(ilist.size(), 0);
 
-	T* curr = ilist.begin();
-	T* end = ilist.end();
+	auto curr = ilist.begin();
+	auto end = ilist.end();
 	
 	int i = 0;
 	while (curr != end)
@@ -360,7 +379,7 @@ Vec<T>::iterator Vec<T>::erase(iterator where)
 {
 	int idx = find_iterator_index(where);
 
-	//insertion index found
+	//remove index found
 	if (idx != -1)
 	{
 		size--;
@@ -380,7 +399,7 @@ Vec<T>::iterator Vec<T>::erase(iterator beg, iterator end)
 {
 	int idx = find_iterator_index(beg);
 
-	//insertion index found
+	//remove index found
 	if (idx != -1)
 	{
 		auto it = beg;
