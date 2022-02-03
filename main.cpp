@@ -209,8 +209,4 @@ int main()
 	cout << endl << "-> " << endl;
 	cout << v2;
 
-
-	cout << endl << "-> " << endl;
-	v1 = Vec(v2.begin(), v2.end());
-	cout << v1;
 */
