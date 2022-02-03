@@ -187,6 +187,13 @@ int main()
 	else
 		cout << "false" << endl;
 
-	
+	auto iter = v2.begin();
+	cout << endl << "iter = v2.begin()" << endl;
+	cout << "*(iter += 6): " << *(iter += 6) << endl;
+	cout << "*(iter += 3): " << *(iter -= 3) << endl;
+
+
+
+
 	return 0;
 }
