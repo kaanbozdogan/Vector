@@ -1,7 +1,5 @@
 #include"vec.cpp"
 #include"iter.cpp"
-#include<vector>
-#include<typeinfo>
 
 using namespace std;
 
@@ -190,23 +188,5 @@ int main()
 		cout << "false" << endl;
 
 	
-
-
-
-
 	return 0;
 }
-
-/*
-	cout << ": ";
-	if ()
-		cout << "true";
-	else
-		cout << "false";
-
-	cout << endl << "-> : " <<  << endl;
-
-	cout << endl << "-> " << endl;
-	cout << v2;
-
-*/
