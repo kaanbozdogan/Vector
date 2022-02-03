@@ -125,6 +125,10 @@ int main()
 	v1 = {2,4,6,8,12,3,4,4,5,6,6,7};
 	cout << v1;
 
+	cout << endl << "-> v1 = Vec<int>(++v2.cbegin(), --v2.cend());" << endl;
+	v1 = Vec<int>(++v2.cbegin(), --v2.cend());
+	cout << v1;
+
 	v2 = {0,1,2,3,4,5,6,7,8};
 	auto v1_beg = v1.begin();
 	auto v1_end = v1.end();
@@ -187,12 +191,8 @@ int main()
 	else
 		cout << "false" << endl;
 
-	auto iter = v2.begin();
-	cout << endl << "iter = v2.begin()" << endl;
-	cout << "*(iter += 6): " << *(iter += 6) << endl;
-	cout << "*(iter += 3): " << *(iter -= 3) << endl;
-
-
+	cout << endl << "*(v2_beg += 6): " << *(v2_beg += 6) << endl;
+	cout << "*(v2_beg += 3): " << *(v2_beg -= 3) << endl;
 
 
 	return 0;

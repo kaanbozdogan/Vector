@@ -209,3 +209,49 @@ Vec<T>::const_iterator Vec<T>::const_iterator::operator-=(int n)
 	this->i -= n;
 	return *this;
 }
+
+template <typename T>
+bool Vec<T>::const_iterator::operator==(const_iterator other) const
+{   
+	return
+	this->data.get() == other.data.get() && 
+	this->i == other.i;
+}
+
+template <typename T>
+bool Vec<T>::const_iterator::operator!=(const_iterator other) const
+{
+	return !(*this == other);
+}
+
+template <typename T>
+bool Vec<T>::const_iterator::operator<(const_iterator other) const
+{
+	return 
+	this->data.get() == other.data.get() &&
+	this->i < other.i;
+}
+
+template <typename T>
+bool Vec<T>::const_iterator::operator>(const_iterator other) const
+{
+	return
+	this->data.get() == other.data.get() &&
+	this->i > other.i;
+}
+
+template <typename T>
+bool Vec<T>::const_iterator::operator<=(const_iterator other) const
+{
+	return 
+	(*this < other) ||
+	(*this == other);
+}
+
+template <typename T>
+bool Vec<T>::const_iterator::operator>=(const_iterator other) const
+{
+	return 
+	(*this > other) ||
+	(*this == other);
+}
