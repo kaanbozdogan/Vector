@@ -185,7 +185,7 @@ int main()
 		std::cout << "false" << std::endl;
 
 	std::cout << std::endl << "*(v2_beg += 6): " << *(v2_beg += 6) << std::endl;
-	std::cout << "*(v2_beg += 3): " << *(v2_beg -= 3) << std::endl;
+	std::cout << "*(v2_beg -= 3): " << *(v2_beg -= 3) << std::endl;
 
 
 
