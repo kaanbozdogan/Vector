@@ -217,34 +217,22 @@ public:
 
 	inline iterator begin() 
 	{ 
-		iterator iter;
-		iter.data = this->data.get();
-		iter.i = 0;
-		return iter;
+		return return_iterator(data.get(),0);
 	}
 
 	inline iterator end() 
 	{ 
-		iterator iter;
-		iter.data = this->data.get();
-		iter.i = size;
-		return iter;
+		return return_iterator(data.get(),size);
 	}
 
 	inline const_iterator cbegin() const 
 	{ 
-		const_iterator iter;
-		iter.data = this->data.get();
-		iter.i = 0;
-		return iter;
+		return return_const_iterator(data.get(),0);
 	};
 	
 	inline const_iterator cend() const 
 	{ 
-		const_iterator iter;
-		iter.data = this->data.get();
-		iter.i = size;
-		return iter;
+		return return_const_iterator(data.get(),size);
 	};
 
 	template <typename U>
