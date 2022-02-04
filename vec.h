@@ -243,7 +243,7 @@ public:
 	{ 
 		const_iterator iter;
 		iter.data = this->data.get();
-		iter.i = 0;
+		iter.i = size;
 		return iter;
 	};
 
@@ -443,7 +443,7 @@ Vec<T>::Vec(Vec<T>::const_iterator beg, Vec<T>::const_iterator end)
 	cap = 10;
 	data = std::unique_ptr<T[]>(new T[cap]);
 
-	while (beg != end)
+	while (beg != end && beg.i < 6)
 	{
 		push_back(*beg);
 		beg++;
