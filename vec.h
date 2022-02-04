@@ -217,22 +217,22 @@ public:
 
 	inline iterator begin() 
 	{ 
-		return return_iterator(data.get(),0);
+		return iterator::return_iterator(data.get(),0);
 	}
 
 	inline iterator end() 
 	{ 
-		return return_iterator(data.get(),size);
+		return iterator::return_iterator(data.get(),size);
 	}
 
 	inline const_iterator cbegin() const 
 	{ 
-		return return_const_iterator(data.get(),0);
+		return const_iterator::return_const_iterator(data.get(),0);
 	};
 	
 	inline const_iterator cend() const 
 	{ 
-		return return_const_iterator(data.get(),size);
+		return const_iterator::return_const_iterator(data.get(),size);
 	};
 
 	template <typename U>
