@@ -13,6 +13,8 @@ public:
 	class iterator
 	{
 	public:
+		friend class Vec<T>;
+
 		iterator& operator++(); //pre
 
 		iterator operator++(int); //post
@@ -50,16 +52,16 @@ public:
 		static iterator return_iterator(T* data, int i);
 
 	private:
-		T* data;
+		T* dataPtr;
 		std::size_t i;
-
-		friend class Vec<T>;
 	};
 
 
 	class const_iterator
 	{
 	public:
+		friend class Vec<T>;
+
 		const_iterator& operator++();
 
 		const_iterator operator++(int);
@@ -97,11 +99,8 @@ public:
 		static const_iterator return_const_iterator(T* data, int i);
 
 	private:
-		T* data;
-		
+		T* dataPtr;
 		std::size_t i;
-
-		friend class Vec<T>;
 	};
 
 
@@ -140,14 +139,14 @@ public:
 		return size == 0;
 	}
 
-	inline T* dataa() 
+	inline T* data() 
 	{ 
-		data.get(); 
+		m_data.get(); 
 	}
 
-	inline const T* dataa() const
+	inline const T* data() const
 	{ 
-		data.get(); 
+		m_data.get(); 
 	}
 
 	void print();
@@ -171,32 +170,32 @@ public:
 
 	inline T& front()
 	{
-		return data[0]; 
+		return m_data[0]; 
 	}
 
 	inline const T& front() const 
 	{
-		return data[0]; 
+		return m_data[0]; 
 	}
 
 	inline T& back() 
 	{ 
-		return data[size - 1]; 
+		return m_data[size - 1]; 
 	}
 
 	inline const T& back() const 
 	{ 
-		return data[size - 1]; 
+		return m_data[size - 1]; 
 	}
 
 	inline T& operator[](std::size_t idx) 
 	{ 
-		return data[idx]; 
+		return m_data[idx]; 
 	}
 
 	inline const T& operator[](std::size_t idx) const
 	{
-		return data[idx];
+		return m_data[idx];
 	}
 
 	Vec& operator=(std::initializer_list<T> ilist);
@@ -217,22 +216,22 @@ public:
 
 	inline iterator begin() 
 	{ 
-		return iterator::return_iterator(data.get(),0);
+		return iterator::return_iterator(m_data.get(),0);
 	}
 
 	inline iterator end() 
 	{ 
-		return iterator::return_iterator(data.get(),size);
+		return iterator::return_iterator(m_data.get(),size);
 	}
 
 	inline const_iterator cbegin() const 
 	{ 
-		return const_iterator::return_const_iterator(data.get(),0);
+		return const_iterator::return_const_iterator(m_data.get(),0);
 	};
 	
 	inline const_iterator cend() const 
 	{ 
-		return const_iterator::return_const_iterator(data.get(),size);
+		return const_iterator::return_const_iterator(m_data.get(),size);
 	};
 
 	template <typename U>
@@ -240,7 +239,7 @@ public:
 
 
 private:
-	std::unique_ptr<T[]> data;
+	std::unique_ptr<T[]> m_data;
 	std::size_t size;
 	std::size_t cap;
 
@@ -271,10 +270,10 @@ void Vec<T>::recapacitate_data(int newCap)
 
 		for(int i = 0; i < size; i++)
 		{
-			temp[i] = data[i];
+			temp[i] = m_data[i];
 		}	
 
-		data = std::move(temp);
+		m_data = std::move(temp);
 	}
 }
 
@@ -304,7 +303,7 @@ template <typename T>
 Vec<T>::iterator Vec<T>::iterator::return_iterator(T* data, int i)
 {
 	Vec<T>::iterator iter;
-	iter.data = data;
+	iter.dataPtr = data;
 	iter.i = i;
 	return iter;
 }
@@ -313,7 +312,7 @@ template <typename T>
 Vec<T>::const_iterator Vec<T>::const_iterator::return_const_iterator(T* data, int i)
 {
 	Vec<T>::const_iterator iter;
-	iter.data = data;
+	iter.dataPtr = data;
 	iter.i = i;
 	return iter;
 }
@@ -326,24 +325,24 @@ Vec<T>::Vec()
 	cap = 10;
 	size = 0;
 
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 }
 
 template <typename T>
 Vec<T>::Vec(const Vec &other) :
 	size(other.size), cap(other.cap)
 {
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	for(int i = 0; i < size; i++)
 	{
-		data[i] = other.data[i];
+		m_data[i] = other.m_data[i];
 	}
 }
 
 template <typename T>
 Vec<T>::Vec(Vec&& other) noexcept :
-	size(std::move(other.size)), cap(std::move(other.cap)), data(std::move(other.data))
+	size(std::move(other.size)), cap(std::move(other.cap)), m_data(std::move(other.m_data))
 {}
 
 template <typename T>
@@ -357,11 +356,11 @@ Vec<T>& Vec<T>::operator=(const Vec &other)
 	size = other.size;
 	cap = other.cap;
 
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	for(int i = 0; i < size; i++)
 	{
-		data[i] = other.data[i];
+		m_data[i] = other.m_data[i];
 	}
 
 	return *this;
@@ -373,7 +372,7 @@ Vec<T>& Vec<T>::operator=(Vec&& other)
 	size = std::move(other.size);
 	cap = std::move(other.cap);
 
-	data = std::move(other.data);
+	m_data = std::move(other.m_data);
 
 	return *this;
 }
@@ -386,11 +385,11 @@ Vec<T>::Vec(std::size_t size, T val)
 {
 	this->size = size;
 	cap = size + 5;
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	for (std::size_t i = 0; i < size; i++)
 	{
-		data[i] = val;
+		m_data[i] = val;
 	}
 	
 }
@@ -400,12 +399,12 @@ Vec<T>::Vec(std::initializer_list<T> ilist)
 {
 	size = ilist.size();
 	cap = size + 5;
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	int i = 0;
 	for(auto e : ilist)
 	{
-		data[i] = e;
+		m_data[i] = e;
 		i++;
 	}
 }
@@ -415,7 +414,7 @@ Vec<T>::Vec(const T *pbegin, const T *pend)
 {
 	size = 0;
 	cap = 10;
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	while (pbegin != pend)
 	{
@@ -429,7 +428,7 @@ Vec<T>::Vec(Vec<T>::const_iterator beg, Vec<T>::const_iterator end)
 {
 	size = 0;
 	cap = 10;
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 
 	while (beg != end && beg.i < 6)
 	{
@@ -448,7 +447,7 @@ std::ostream& operator<<(std::ostream& os, const Vec<T>& v)
 
 	for(int i = 0; i < v.sizee(); i++)
 	{
-		os << v.data[i] << " ";
+		os << v.m_data[i] << " ";
 	}
 	os << "]";
 
@@ -469,7 +468,7 @@ void Vec<T>::push_back(const T& value)
 		recapacitate_data(cap + 5);
 	}
 
-	data[size] = value;
+	m_data[size] = value;
 	size++;
 }
 
@@ -492,7 +491,7 @@ void Vec<T>::clear()
 {
 	size = 0;
 	cap = 10;
-	data = std::unique_ptr<T[]>(new T[cap]);
+	m_data = std::unique_ptr<T[]>(new T[cap]);
 }
 
 template <typename T>
@@ -509,7 +508,7 @@ void Vec<T>::resize(std::size_t n, T val)
 		{
 			for (std::size_t i = old_size; i < size; i++)
 			{
-				data[i] = val;
+				m_data[i] = val;
 			}
 			
 		}		
@@ -530,15 +529,15 @@ void Vec<T>::swap(Vec<T>& other)
 	std::unique_ptr<T[]> temp_d;
 	std::size_t temp_c, temp_s;
 
-	temp_d = std::move(this->data);
+	temp_d = std::move(this->m_data);
 	temp_c = std::move(this->cap);
 	temp_s = std::move(this->size);
 
-	this->data = std::move(other.data);
+	this->m_data = std::move(other.m_data);
 	this->cap = std::move(other.cap);
 	this->size = std::move(other.size);
 
-	other.data = std::move(temp_d);
+	other.m_data = std::move(temp_d);
 	other.cap = std::move(temp_c);
 	other.size = std::move(temp_s);
 }
@@ -554,7 +553,7 @@ Vec<T>& Vec<T>::operator=(std::initializer_list<T> ilist)
 	int i = 0;
 	while (curr != end)
 	{
-		data[i] = *curr;
+		m_data[i] = *curr;
 		i++;
 		curr++;
 	}
@@ -580,12 +579,12 @@ Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, T val)
 		//shift data and insert
 		for (int i = size - 1; i > idx; i--)
 		{
-			data[i] = data[i - 1];
+			m_data[i] = m_data[i - 1];
 		}
-		data[idx] = val;
+		m_data[idx] = val;
 	}
 
-	return Vec<T>::iterator::return_iterator(this->data.get(), idx);
+	return Vec<T>::iterator::return_iterator(this->m_data.get(), idx);
 }
 
 template <typename T>
@@ -616,19 +615,19 @@ Vec<T>::iterator Vec<T>::insert(Vec<T>::iterator where, Vec<T>::iterator source_
 		//shift data
 		for (int i = size - 1; i >= idx + source_size; i--)
 		{
-			data[i] = data[i - source_size];
+			m_data[i] = m_data[i - source_size];
 		}
 		
 		//insert source
 		it = source_beg;
 		for (std::size_t i = 0; i < source_size; i++)
 		{
-			data[i + idx] = *it;
+			m_data[i + idx] = *it;
 			it++;
 		}
 	}
 
-	return Vec<T>::iterator::return_iterator(this->data.get(), idx);
+	return Vec<T>::iterator::return_iterator(this->m_data.get(), idx);
 }
 
 template <typename T>
@@ -644,11 +643,11 @@ Vec<T>::iterator Vec<T>::erase(iterator where)
 		//shift data to erase
 		for (std::size_t i = idx; i < size; i++)
 		{
-			data[i] = data[i + 1];
+			m_data[i] = m_data[i + 1];
 		}
 	}
 
-	return Vec<T>::iterator::return_iterator(this->data.get(), idx);
+	return Vec<T>::iterator::return_iterator(this->m_data.get(), idx);
 }
 
 template <typename T>
@@ -674,11 +673,11 @@ Vec<T>::iterator Vec<T>::erase(iterator beg, iterator end)
 		//shift data to erase
 		for (std::size_t i = idx; i < size; i++)
 		{
-			data[i] = data[i + source_size];
+			m_data[i] = m_data[i + source_size];
 		}
 	}
 
-	return Vec<T>::iterator::return_iterator(this->data.get(), idx);
+	return Vec<T>::iterator::return_iterator(this->m_data.get(), idx);
 }
 
 template <typename T>
@@ -689,7 +688,7 @@ void Vec<T>::assign(std::size_t n, T val)
 
 	for (std::size_t i = 0; i < size; i++)
 	{
-		data[i] = val;
+		m_data[i] = val;
 	}
 	
 }
@@ -703,7 +702,7 @@ void Vec<T>::assign(std::initializer_list<T> ilist)
 	int i = 0;
 	for(auto e : ilist)
 	{
-		data[i] = e;
+		m_data[i] = e;
 		i++;
 	}
 }
@@ -756,13 +755,13 @@ Vec<T>::iterator Vec<T>::iterator::operator--(int)
 template <typename T>
 inline T& Vec<T>::iterator::operator*()
 {
-	return data[i];
+	return dataPtr[i];
 }
 
 template <typename T>
 inline T& Vec<T>::iterator::operator[](int n)
 {
-	return data[i + n];
+	return dataPtr[i + n];
 }
 
 template <typename T>
@@ -774,26 +773,26 @@ inline std::ptrdiff_t Vec<T>::iterator::operator-(iterator other)
 template <typename T>
 inline Vec<T>::iterator Vec<T>::iterator::operator+(int n)
 {
-	return Vec<T>::iterator::return_iterator(this->data, i + n);
+	return Vec<T>::iterator::return_iterator(dataPtr, i + n);
 }
 
 template <typename T>
 inline Vec<T>::iterator Vec<T>::iterator::operator-(int n)
 {
-	return Vec<T>::iterator::return_iterator(this->data, i - n);
+	return Vec<T>::iterator::return_iterator(dataPtr, i - n);
 }
 
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator+=(int n)
 {
-	this->i += n;
+	i += n;
 	return *this;
 }
 
 template <typename T>
 Vec<T>::iterator Vec<T>::iterator::operator-=(int n)
 {
-	this->i -= n;
+	i -= n;
 	return *this;
 }
 
@@ -801,7 +800,7 @@ template <typename T>
 bool Vec<T>::iterator::operator==(iterator other) const
 {   
 	return
-	this->data == other.data && 
+	this->dataPtr == other.dataPtr && 
 	this->i == other.i;
 }
 
@@ -815,7 +814,7 @@ template <typename T>
 bool Vec<T>::iterator::operator<(iterator other) const
 {
 	return 
-	this->data == other.data &&
+	this->dataPtr == other.dataPtr &&
 	this->i < other.i;
 }
 
@@ -823,7 +822,7 @@ template <typename T>
 bool Vec<T>::iterator::operator>(iterator other) const
 {
 	return
-	this->data == other.data &&
+	this->dataPtr == other.dataPtr &&
 	this->i > other.i;
 }
 
@@ -879,13 +878,13 @@ Vec<T>::const_iterator Vec<T>::const_iterator::operator--(int)
 template <typename T>
 inline const T& Vec<T>::const_iterator::operator*()
 {
-	return data[i];
+	return dataPtr[i];
 }
 
 template <typename T>
 inline const T& Vec<T>::const_iterator::operator[](int n)
 {
-	return data[i + n];
+	return dataPtr[i + n];
 }
 
 template <typename T>
@@ -897,13 +896,13 @@ inline std::ptrdiff_t Vec<T>::const_iterator::operator-(const_iterator other)
 template <typename T>
 inline Vec<T>::const_iterator Vec<T>::const_iterator::operator+(int n)
 {
-	return Vec<T>::const_iterator::return_const_iterator(this->data, i + n);
+	return Vec<T>::const_iterator::return_const_iterator(this->dataPtr, i + n);
 }
 
 template <typename T>
 inline Vec<T>::const_iterator Vec<T>::const_iterator::operator-(int n)
 {
-	return Vec<T>::const_iterator::return_const_iterator(this->data, i - n);
+	return Vec<T>::const_iterator::return_const_iterator(this->dataPtr, i - n);
 }
 
 template <typename T>
@@ -924,7 +923,7 @@ template <typename T>
 bool Vec<T>::const_iterator::operator==(const_iterator other) const
 {   
 	return
-	this->data == other.data && 
+	this->dataPtr == other.dataPtr && 
 	this->i == other.i;
 }
 
@@ -938,7 +937,7 @@ template <typename T>
 bool Vec<T>::const_iterator::operator<(const_iterator other) const
 {
 	return 
-	this->data == other.data &&
+	this->dataPtr == other.dataPtr &&
 	this->i < other.i;
 }
 
@@ -946,7 +945,7 @@ template <typename T>
 bool Vec<T>::const_iterator::operator>(const_iterator other) const
 {
 	return
-	this->data == other.data &&
+	this->dataPtr == other.dataPtr &&
 	this->i > other.i;
 }
 
