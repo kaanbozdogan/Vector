@@ -10,8 +10,6 @@ class Vec
 {
 public:
 
-
-
 	class iterator
 	{
 	public:
