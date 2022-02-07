@@ -10,84 +10,84 @@ class Vec
 {
 public:
 
-	template <typename I>
+	template <typename U, typename TIterator>
 	class abstract_iterator
 	{
 	public:
 		friend class Vec<T>;
-		friend I;
+		friend TIterator;
 
-		T& operator*()
+		U& operator*()
 		{
 			return dataPtr[i];
 		}
 
-		inline T& operator[](int n)
+		inline U& operator[](int n)
 		{
 			return dataPtr[i + n];
 		}
 
-		ptrdiff_t operator-(I other)
+		ptrdiff_t operator-(TIterator other)
 		{
 			return this->i - other.i;
 		}
 
-		I operator+(int n)
+		TIterator operator+(int n)
 		{
 			return return_iterator(dataPtr, i + n);
 		}
 		
-		I operator-(int n)
+		TIterator operator-(int n)
 		{
 			return return_iterator(dataPtr, i - n);
 		}
 		
-		I operator+=(int n)
+		TIterator operator+=(int n)
 		{
 			i += n;
 			return *this;
 		}
 		
-		I operator-=(int n)
+		TIterator operator-=(int n)
 		{
 			i -= n;
 			return *this;
 		}
 
-		bool operator==(I other) const
+		bool operator==(TIterator other) const
 		{   
 			return
 				this->dataPtr == other.dataPtr && 
 				this->i == other.i;
 		}
 
-		bool operator!=(I other) const
+		bool operator!=(TIterator other) const
 		{
 			return !(*this == other);
 		}
 
-		bool operator<(I other) const
+		bool operator<(TIterator other) const
 		{
 			return 
 				this->dataPtr == other.dataPtr &&
 				this->i < other.i;
 		}
 
-		bool operator>(I other) const
+		bool operator>(TIterator other) const
 		{
 			return
 				this->dataPtr == other.dataPtr &&
 				this->i > other.i;
 		}
 
-		bool operator<=(I other) const
+		bool operator<=(TIterator other) const
 		{
 			return 
 				(*this < other) ||
 				(*this == other);
 		}
 
-		bool operator>=(I other) const
+		bool operator>=(TIterator other) const
 		{
 			return 
 				(*this > other) ||
@@ -95,22 +95,22 @@ public:
 		}
 
 	private:
-		T* dataPtr;
+		U* dataPtr;
 		std::size_t i;
 
-		static I return_iterator(T* data, int i)
+		static TIterator return_iterator(U* data, int i)
 		{
-			I iter;
+			TIterator iter;
 			iter.dataPtr = data;
 			iter.i = i;
 			return iter;
 		}
 	};
 
-	class iterator : public abstract_iterator<iterator>
+	class iterator : public abstract_iterator<T, iterator>
 	{
 	public:
-		friend abstract_iterator<iterator>;
+		friend abstract_iterator<T, iterator>;
 
 		iterator& operator++()
 		{
@@ -142,17 +142,17 @@ public:
 		iterator()
 		{}
 
-		iterator(abstract_iterator<iterator> other)
+		iterator(abstract_iterator<T, iterator> other)
 		{
 			this->dataPtr = other.dataPtr;
 			this->i = other.i;
 		}
 	};
 
-	class const_iterator : public abstract_iterator<const_iterator>
+	class const_iterator : public abstract_iterator<const T, const_iterator>
 	{
 	public:
-		friend abstract_iterator<const_iterator>;
+		friend abstract_iterator<const T, const_iterator>;
 
 		const_iterator& operator++()
 		{
@@ -184,7 +184,7 @@ public:
 		const_iterator()
 		{}
 
-		const_iterator(abstract_iterator<const_iterator> other)
+		const_iterator(abstract_iterator<T, const_iterator> other)
 		{
 			this->dataPtr = other.dataPtr;
 			this->i = other.i;
