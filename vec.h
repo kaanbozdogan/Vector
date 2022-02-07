@@ -10,99 +10,186 @@ class Vec
 {
 public:
 
-	class iterator
+	template <typename I>
+	class abstract_iterator
 	{
 	public:
 		friend class Vec<T>;
+		friend I;
 
-		iterator& operator++(); //pre
+		T& operator*()
+		{
+			return dataPtr[i];
+		}
 
-		iterator operator++(int); //post
+		inline T& operator[](int n)
+		{
+			return dataPtr[i + n];
+		}
 
-		iterator& operator--(); //pre
+		ptrdiff_t operator-(I other)
+		{
+			return this->i - other.i;
+		}
 
-		iterator operator--(int); //post
-
-		T& operator*();
-
-		inline T& operator[](int n);
-
-		ptrdiff_t operator-(iterator other);
-
-		iterator operator+(int n);
+		I operator+(int n)
+		{
+			return return_iterator(dataPtr, i + n);
+		}
 		
-		iterator operator-(int n);
+		I operator-(int n)
+		{
+			return return_iterator(dataPtr, i - n);
+		}
 		
-		iterator operator+=(int n);
+		I operator+=(int n)
+		{
+			i += n;
+			return *this;
+		}
 		
-		iterator operator-=(int n);
+		I operator-=(int n)
+		{
+			i -= n;
+			return *this;
+		}
 
-		bool operator==(iterator other) const;
+		bool operator==(I other) const
+		{   
+			return
+				this->dataPtr == other.dataPtr && 
+				this->i == other.i;
+		}
 
-		bool operator!=(iterator other) const;
+		bool operator!=(I other) const
+		{
+			return !(*this == other);
+		}
 
-		bool operator<(iterator other) const;
+		bool operator<(I other) const
+		{
+			return 
+				this->dataPtr == other.dataPtr &&
+				this->i < other.i;
+		}
 
-		bool operator>(iterator other) const;
+		bool operator>(I other) const
+		{
+			return
+				this->dataPtr == other.dataPtr &&
+				this->i > other.i;
+		}
 
-		bool operator<=(iterator other) const;
+		bool operator<=(I other) const
+		{
+			return 
+				(*this < other) ||
+				(*this == other);
+		}
 
-		bool operator>=(iterator other) const;
-
-		static iterator return_iterator(T* data, int i);
+		bool operator>=(I other) const
+		{
+			return 
+				(*this > other) ||
+				(*this == other);
+		}
 
 	private:
 		T* dataPtr;
 		std::size_t i;
+
+		static I return_iterator(T* data, int i)
+		{
+			I iter;
+			iter.dataPtr = data;
+			iter.i = i;
+			return iter;
+		}
 	};
 
-
-	class const_iterator
+	class iterator : public abstract_iterator<iterator>
 	{
 	public:
-		friend class Vec<T>;
+		friend abstract_iterator<iterator>;
 
-		const_iterator& operator++();
+		iterator& operator++()
+		{
+			this->i++;
+			return *this;
+		}
 
-		const_iterator operator++(int);
+		iterator operator++(int)
+		{
+			auto temp = *this;
+			this->i++;
+			return temp;
+		}
 
-		const_iterator& operator--();
+		iterator& operator--()
+		{
+			this->i--;
+			return *this;
+		}
 
-		const_iterator operator--(int);
-
-		const T& operator*();
-
-		inline const T& operator[](int n);
-
-		ptrdiff_t operator-(const_iterator other);
-
-		const_iterator operator+(int n);
-		
-		const_iterator operator-(int n);
-		
-		const_iterator operator+=(int n);
-		
-		const_iterator operator-=(int n);
-
-		bool operator==(const_iterator other) const;
-
-		bool operator!=(const_iterator other) const;
-
-		bool operator<(const_iterator other) const;
-
-		bool operator>(const_iterator other) const;
-
-		bool operator<=(const_iterator other) const;
-
-		bool operator>=(const_iterator other) const;
-
-		static const_iterator return_const_iterator(T* data, int i);
+		iterator operator--(int)
+		{
+			auto temp = *this;
+			this->i--;
+			return temp;
+		}
 
 	private:
-		const T* dataPtr;
-		std::size_t i;
+		iterator()
+		{}
+
+		iterator(abstract_iterator<iterator> other)
+		{
+			this->dataPtr = other.dataPtr;
+			this->i = other.i;
+		}
 	};
 
+	class const_iterator : public abstract_iterator<const_iterator>
+	{
+	public:
+		friend abstract_iterator<const_iterator>;
+
+		const_iterator& operator++()
+		{
+			this->i++;
+			return *this;
+		}
+
+		const_iterator operator++(int)
+		{
+			auto temp = *this;
+			this->i++;
+			return temp;
+		}
+
+		const_iterator& operator--()
+		{
+			this->i--;
+			return *this;
+		}
+
+		const_iterator operator--(int)
+		{
+			auto temp = *this;
+			this->i--;
+			return temp;
+		}
+
+	private:
+		const_iterator()
+		{}
+
+		const_iterator(abstract_iterator<const_iterator> other)
+		{
+			this->dataPtr = other.dataPtr;
+			this->i = other.i;
+		}
+	};
 
 	Vec();
 
@@ -226,12 +313,12 @@ public:
 
 	inline const_iterator cbegin() const 
 	{ 
-		return const_iterator::return_const_iterator(m_data.get(),0);
+		return const_iterator::return_iterator(m_data.get(),0);
 	};
 	
 	inline const_iterator cend() const 
 	{ 
-		return const_iterator::return_const_iterator(m_data.get(),size);
+		return const_iterator::return_iterator(m_data.get(),size);
 	};
 
 	template <typename U>
@@ -299,23 +386,6 @@ int Vec<T>::find_iterator_index(Vec<T>::iterator where)
 	return idx;
 }
 
-template <typename T>
-Vec<T>::iterator Vec<T>::iterator::return_iterator(T* data, int i)
-{
-	Vec<T>::iterator iter;
-	iter.dataPtr = data;
-	iter.i = i;
-	return iter;
-}
-
-template <typename T>
-Vec<T>::const_iterator Vec<T>::const_iterator::return_const_iterator(T* data, int i)
-{
-	Vec<T>::const_iterator iter;
-	iter.dataPtr = data;
-	iter.i = i;
-	return iter;
-}
 
 /*---SPECIAL MEMBER---*/
 
@@ -718,253 +788,5 @@ void Vec<T>::assign(const T* pbeg, const T* pend)
 		pbeg++;
 	}
 }
-
-
-/*---ITERATOR---*/
-
-template <typename T>
-Vec<T>::iterator& Vec<T>::iterator::operator++() 
-{
-	i++;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::iterator Vec<T>::iterator::operator++(int) 
-{
-	auto temp = *this;
-	i++;
-	return temp;
-}
-
-template <typename T>
-Vec<T>::iterator& Vec<T>::iterator::operator--() 
-{
-	i--;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::iterator Vec<T>::iterator::operator--(int) 
-{
-	auto temp = *this;
-	i--;
-	return temp;
-}
-
-template <typename T>
-inline T& Vec<T>::iterator::operator*()
-{
-	return dataPtr[i];
-}
-
-template <typename T>
-inline T& Vec<T>::iterator::operator[](int n)
-{
-	return dataPtr[i + n];
-}
-
-template <typename T>
-inline std::ptrdiff_t Vec<T>::iterator::operator-(iterator other)
-{
-	return this->i - other.i;
-}
-
-template <typename T>
-inline Vec<T>::iterator Vec<T>::iterator::operator+(int n)
-{
-	return Vec<T>::iterator::return_iterator(dataPtr, i + n);
-}
-
-template <typename T>
-inline Vec<T>::iterator Vec<T>::iterator::operator-(int n)
-{
-	return Vec<T>::iterator::return_iterator(dataPtr, i - n);
-}
-
-template <typename T>
-Vec<T>::iterator Vec<T>::iterator::operator+=(int n)
-{
-	i += n;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::iterator Vec<T>::iterator::operator-=(int n)
-{
-	i -= n;
-	return *this;
-}
-
-template <typename T>
-bool Vec<T>::iterator::operator==(iterator other) const
-{   
-	return
-	this->dataPtr == other.dataPtr && 
-	this->i == other.i;
-}
-
-template <typename T>
-inline bool Vec<T>::iterator::operator!=(iterator other) const
-{
-	return !(*this == other);
-}
-
-template <typename T>
-bool Vec<T>::iterator::operator<(iterator other) const
-{
-	return 
-	this->dataPtr == other.dataPtr &&
-	this->i < other.i;
-}
-
-template <typename T>
-bool Vec<T>::iterator::operator>(iterator other) const
-{
-	return
-	this->dataPtr == other.dataPtr &&
-	this->i > other.i;
-}
-
-template <typename T>
-bool Vec<T>::iterator::operator<=(iterator other) const
-{
-	return 
-	(*this < other) ||
-	(*this == other);
-}
-
-template <typename T>
-bool Vec<T>::iterator::operator>=(iterator other) const
-{
-	return 
-	(*this > other) ||
-	(*this == other);
-}
-
-
-/*---CONST_ITERATOR---*/
-
-template <typename T>
-Vec<T>::const_iterator& Vec<T>::const_iterator::operator++()
-{
-	i++;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::const_iterator Vec<T>::const_iterator::operator++(int)
-{
-	auto temp = *this;
-	i++;
-	return temp;
-}
-
-template <typename T>
-Vec<T>::const_iterator& Vec<T>::const_iterator::operator--()
-{
-	i--;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::const_iterator Vec<T>::const_iterator::operator--(int)
-{
-	auto temp = *this;
-	i--;
-	return temp;
-}
-
-template <typename T>
-inline const T& Vec<T>::const_iterator::operator*()
-{
-	return dataPtr[i];
-}
-
-template <typename T>
-inline const T& Vec<T>::const_iterator::operator[](int n)
-{
-	return dataPtr[i + n];
-}
-
-template <typename T>
-inline std::ptrdiff_t Vec<T>::const_iterator::operator-(const_iterator other)
-{
-	return this->i - other.i;
-}
-
-template <typename T>
-inline Vec<T>::const_iterator Vec<T>::const_iterator::operator+(int n)
-{
-	return Vec<T>::const_iterator::return_const_iterator(this->dataPtr, i + n);
-}
-
-template <typename T>
-inline Vec<T>::const_iterator Vec<T>::const_iterator::operator-(int n)
-{
-	return Vec<T>::const_iterator::return_const_iterator(this->dataPtr, i - n);
-}
-
-template <typename T>
-Vec<T>::const_iterator Vec<T>::const_iterator::operator+=(int n)
-{
-	this->i += n;
-	return *this;
-}
-
-template <typename T>
-Vec<T>::const_iterator Vec<T>::const_iterator::operator-=(int n)
-{
-	this->i -= n;
-	return *this;
-}
-
-template <typename T>
-bool Vec<T>::const_iterator::operator==(const_iterator other) const
-{   
-	return
-	this->dataPtr == other.dataPtr && 
-	this->i == other.i;
-}
-
-template <typename T>
-inline bool Vec<T>::const_iterator::operator!=(const_iterator other) const
-{
-	return !(*this == other);
-}
-
-template <typename T>
-bool Vec<T>::const_iterator::operator<(const_iterator other) const
-{
-	return 
-	this->dataPtr == other.dataPtr &&
-	this->i < other.i;
-}
-
-template <typename T>
-bool Vec<T>::const_iterator::operator>(const_iterator other) const
-{
-	return
-	this->dataPtr == other.dataPtr &&
-	this->i > other.i;
-}
-
-template <typename T>
-bool Vec<T>::const_iterator::operator<=(const_iterator other) const
-{
-	return 
-	(*this < other) ||
-	(*this == other);
-}
-
-template <typename T>
-bool Vec<T>::const_iterator::operator>=(const_iterator other) const
-{
-	return 
-	(*this > other) ||
-	(*this == other);
-}
-
-
 
 #endif
