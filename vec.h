@@ -10,6 +10,8 @@ class Vec
 {
 public:
 
+/*---ITERATORS---*/
+
 	template <typename U, typename TIterator>
 	class abstract_iterator
 	{
@@ -107,6 +109,7 @@ public:
 		}
 	};
 
+
 	class iterator : public abstract_iterator<T, iterator>
 	{
 	public:
@@ -148,6 +151,7 @@ public:
 			this->i = other.i;
 		}
 	};
+
 
 	class const_iterator : public abstract_iterator<const T, const_iterator>
 	{
@@ -191,9 +195,12 @@ public:
 		}
 	};
 
+
+/*---VECTOR---*/
+
 	Vec();
 
-	explicit Vec(std::size_t size, T val = 0);
+	explicit Vec(std::size_t size, T val);
 
 	Vec(std::initializer_list<T> ilist);
 
@@ -201,7 +208,8 @@ public:
 
 	Vec(Vec<T>::const_iterator beg, Vec<T>::const_iterator end);
 
-	//~Vec()
+	~Vec()
+	{}
 	
 	Vec(const Vec &other);
 
@@ -314,12 +322,12 @@ public:
 	inline const_iterator cbegin() const 
 	{ 
 		return const_iterator::return_iterator(m_data.get(),0);
-	};
+	}
 	
 	inline const_iterator cend() const 
 	{ 
 		return const_iterator::return_iterator(m_data.get(),size);
-	};
+	}
 
 	template <typename U>
 	friend std::ostream& operator<<(std::ostream& os, const Vec<U>& v);
